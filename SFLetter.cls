@@ -6,14 +6,15 @@
 %   Custom Letter Class
 %
 %   Fields:
-%           \name     : Name of the sender
-%           \date     : In any format you like
-%           \address  : Address of the sender (appears in top right). Lines
-%                     : of address separated by '\\'. No '\\' after last line.
-%           \email    : Email of the sender (below address)
-%           \greeting : The greeting you would like (e.g. Dear Sir,)
-%           \subject  : Subject of the letter
-%           \signoff  : Signoff with space left for a signature (e.g. Regards,)
+%           \name          : Name of the sender
+%           \date          : In any format you like
+%           \address       : Address of the sender (appears in top right). Lines
+%                          : of address separated by '\\'. No '\\' after last line.
+%           \email         : Email of the sender (below address)
+%           \greeting      : The greeting you would like (e.g. Dear Sir,)
+%           \subject       : Subject of the letter
+%           \signoff       : Signoff with space left for a signature (e.g. Regards,)
+%           \signaturefile : PNG file containing your signature. If not, a space will be left.
 %           
 %           If any of these are not provided, the class will use
 %           a default without crashing.
@@ -53,9 +54,9 @@
 \ProvidesClass{SFLetter}[2010/02/16 S. Fendyke Custom letter class]
 \LoadClass[11pt,a4paper,oneside]{article}
 
-% There are no required packages. If there were, they should be added here.
+\RequirePackage{graphicx}
+% There are no other required packages. If there were, they should be added here.
 % e.g.
-%\RequirePackage{graphicx}
 %\RequirePackage{url}
 
 % Set the margins to a reasonable size - this is much smaller than the 
@@ -69,7 +70,7 @@
 % Turn off paragraph indenting, and add empty vertical space between them
 % instead. This gives the text a "block" layout.
 \setlength{\parindent}{0.0in} % stop indenting
-\setlength{\parskip}{0.1in}
+\setlength{\parskip}{0.2in}
 
 % Turn off page numbering
 \pagestyle{empty}
@@ -89,7 +90,7 @@
 }
 
 \newcommand{\subject}[1]{%                           
-  \newcommand{\SFsubject}{\textbf{#1\\}} 
+  \newcommand{\SFsubject}{\textbf{#1}} 
 }
 
 \newcommand{\greeting}[1]{%                           
@@ -104,6 +105,10 @@
   \newcommand{\SFaddress}{#1\\} 
 }
 
+\newcommand{\signaturefile}[1]{%
+  \newcommand{\SFsignaturefile}{#1}
+}
+
 \newcommand{\makeclosing}{%
 
 \ifx\SFsignoff\undefined
@@ -112,12 +117,16 @@
 \relax
 \fi
 
-\vspace{1cm}
 \SFsignoff\par
 \ifx\SFname\undefined
 \relax
 \else
+
+\ifx\SFsignaturefile\undefined
 \vspace{1cm}
+\else
+\includegraphics[height=2cm]{\SFsignaturefile}\\
+\fi
 \SFname
 \fi
 }
@@ -158,7 +167,6 @@
 \ifx\SFsubject\undefined
 \relax
 \else
-\vspace{0.2cm}
 \SFsubject
 \fi
 }
